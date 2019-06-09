@@ -1,0 +1,19 @@
+{
+    "name": "etechfocus/jquery-jsonform",
+    "description": "Jquery Form Builder",
+    "keywords": [
+    ],
+    "homepage": "https://github.com/etechfocus/jquery-jsonform",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "eTechFocus LLC",
+            "email": "suppport@etechfocus.com",
+            "homepage": "http://etechfocus.com"
+        }
+    ],
+    "require": {
+    },
+    "require-dev": {
+    }
+}

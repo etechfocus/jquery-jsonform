@@ -1,0 +1,30 @@
+{
+  "name": "jquery-jsonform",
+  "homepage": "https://etechfocus.com",
+  "authors": [
+    "Support <support@etechfocus.com>"
+  ],
+  "description": "Form Builder",
+  "main": [
+    "index.html",
+    "dist/js/form.js"
+  ],
+  "keywords": [
+    "js",
+    "html"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "/.*",
+    "node_modules",
+    "bower_components",
+    "composer.json",
+    "documentation"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1"
+  },
+  "resolutions": {
+    "jquery": "^3.2.1"
+  }
+}

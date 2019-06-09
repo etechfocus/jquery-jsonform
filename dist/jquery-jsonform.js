@@ -19,6 +19,9 @@ class AttrInfo {
   }
 
   getValue() {
+    if (typeof(this.props.value) == 'undefined') {
+      return '';
+    } 
     return this.props.value;
   }
 
@@ -54,7 +57,7 @@ class ModelInfo {
 ////////////////////
 class TextFieldHandler {
   getField(modelInfo, attrInfo) {
-    return $('<input type="text" class="form-control" id="' + attrInfo.getId() + '" placeholder="">') 
+    return $('<input type="text" class="form-control" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
   }
 }
 

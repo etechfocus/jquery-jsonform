@@ -82,7 +82,9 @@ class FormBuilder {
     this.handlers[type] = handler;
   }
 
-  constructor() {
+  constructor(options) {
+    this.options = options;
+
     this.register(this.TYPE_STRING, new TextFieldHandler());
     this.register(this.TYPE_PASSWORD, new PasswordFieldHandler());
     this.register(this.TYPE_EMAIL, new TextFieldHandler());
@@ -91,10 +93,10 @@ class FormBuilder {
     this.register(this.TYPE_DATETIME, new TextFieldHandler());
   }
 
-  build(action, formId, modelInfoJSON) {
+  build(method, action, formId, modelInfoJSON) {
       var modelInfo = new ModelInfo(modelInfoJSON);
 
-      var form = $('<form role="form" action="' + action + '"></form>');
+      var form = $('<form role="form" method="' + method + '" action="' + action + '"></form>');
 
       // boxHeader
       var boxHeader = $('<div class="box-header"></div>');

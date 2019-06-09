@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Dashboard</title>
+  <title>jquery-jsonform</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -102,8 +102,9 @@
 <script src="dist/jquery-jsonform.js?v=1"></script>
 <script>
 $(document).ready(function() {
-  var formBuilder = new FormBuilder();
-  formBuilder.build('#action', '#form1', 
+  var options = [];
+  var formBuilder = new FormBuilder(options);
+  formBuilder.build('get', '#action', '#form1', 
     {  
       "name": "User",
       "attrs": [
@@ -138,7 +139,7 @@ $(document).ready(function() {
       ]
     });
 
-  formBuilder.build('#action', '#form2', 
+  formBuilder.build('get', '#action', '#form2', 
     {  
       "name": "Product",
       "attrs": [

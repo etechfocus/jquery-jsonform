@@ -55,6 +55,21 @@ class ModelInfo {
 ////////////////////
 // Handlers
 ////////////////////
+class StringFieldHandler {
+  appendField(boxBody, modelInfo, attrInfo) {
+    var fieldGroup = $('<div class="form-group"></div>');
+    var fieldLabel = $('<label for="' + attrInfo.getId() +'">' + attrInfo.getName() + '</label>');
+    fieldGroup.append(fieldLabel);
+    var fieldInput = $('<input type="text" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
+    fieldGroup.append(fieldInput);
+    boxBody.append(fieldGroup);
+  }
+  validate(modelInfo, attrInfo) {
+    // TODO - do validation on min, max ...etc
+    return true;
+  }
+}
+
 class TextFieldHandler {
   appendField(boxBody, modelInfo, attrInfo) {
     var fieldGroup = $('<div class="form-group"></div>');
@@ -65,6 +80,8 @@ class TextFieldHandler {
     boxBody.append(fieldGroup);
   }
   validate(modelInfo, attrInfo) {
+    // TODO - do validation on min, max ...etc
+    return true;
   }
 }
 
@@ -78,6 +95,8 @@ class PasswordFieldHandler {
     boxBody.append(fieldGroup);
   }
   validate(modelInfo, attrInfo) {
+    // TODO - do validation on min, max ...etc
+    return true;
   }
 }
 
@@ -87,6 +106,7 @@ class HiddenFieldHandler {
     boxBody.append(fieldInput);
   }
   validate(modelInfo, attrInfo) {
+    return true;
   }
 }
 
@@ -119,29 +139,33 @@ class FormBuilder {
 
     // register handles
     this.register(this.TYPE_HIDDEN, new HiddenFieldHandler());
-    this.register(this.TYPE_STRING, new TextFieldHandler());
+    this.register(this.TYPE_STRING, new StringFieldHandler());
     this.register(this.TYPE_PASSWORD, new PasswordFieldHandler());
-    this.register(this.TYPE_EMAIL, new TextFieldHandler());
+    this.register(this.TYPE_EMAIL, new StringFieldHandler());
     this.register(this.TYPE_TEXT, new TextFieldHandler());
-    this.register(this.TYPE_CURRENCY, new TextFieldHandler());
-    this.register(this.TYPE_DATETIME, new TextFieldHandler());
+    this.register(this.TYPE_CURRENCY, new StringFieldHandler());
+    this.register(this.TYPE_DATETIME, new StringFieldHandler());
   }
 
-  onClick(event) {
-  }
-
-  onClick1(event) {
+  onSubmit(event) {
     event.preventDefault();
 
-    // TODO - do validation here
     var attrInfoList = event.data.modelInfo.getAttrInfoList();
     for (var i in attrInfoList) {
       var attrInfo = attrInfoList[i];
-      console.log(attrInfo);
+      var type = attrInfo.getType();
+      if (type in event.data.handlers) {
+        var handler = event.data.handlers[type];
+        var isValid = handler.validate(event.data.modelInfo, attrInfo);
+        if (!isValid) {
+          // TODO - display error
+          return false; 
+        }
+      }
     }
 
-    // submit form
-    $(event.data.formId).submit();
+    // everything is good, let's submit
+    $(this).unbind().submit();
   }
 
   build() {
@@ -166,9 +190,10 @@ class FormBuilder {
 
       // boxFooter
       var boxFooter = $('<div class="box-footer"></div>');
-      var submitButton = $('<button type="submit" class="btn btn-primary">' + this.buttonLabel + '</button>');
-      submitButton.bind('click', this, this.onClick);
+      var submitButton = $('<input type="submit" class="btn btn-primary" value="' + this.buttonLabel + '">');
       boxFooter.append(submitButton);
+
+      form.bind('submit', this, this.onSubmit);
 
       form.append(boxHeader);
       form.append(boxBody);

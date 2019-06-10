@@ -64,6 +64,8 @@ class TextFieldHandler {
     fieldGroup.append(fieldInput);
     boxBody.append(fieldGroup);
   }
+  validate(modelInfo, attrInfo) {
+  }
 }
 
 class PasswordFieldHandler {
@@ -75,12 +77,16 @@ class PasswordFieldHandler {
     fieldGroup.append(fieldInput);
     boxBody.append(fieldGroup);
   }
+  validate(modelInfo, attrInfo) {
+  }
 }
 
 class HiddenFieldHandler {
   appendField(boxBody, modelInfo, attrInfo) {
     var fieldInput = $('<input type="hidden" class="form-control" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
     boxBody.append(fieldInput);
+  }
+  validate(modelInfo, attrInfo) {
   }
 }
 
@@ -103,9 +109,15 @@ class FormBuilder {
     this.handlers[type] = handler;
   }
 
-  constructor(options) {
+  constructor(method, action, buttonLabel,  formId, modelInfoJSON, options) {
+    this.method = method;
+    this.action = action;
+    this.formId = formId;
+    this.buttonLabel = buttonLabel;
+    this.modelInfo = new ModelInfo(modelInfoJSON);
     this.options = options;
 
+    // register handles
     this.register(this.TYPE_HIDDEN, new HiddenFieldHandler());
     this.register(this.TYPE_STRING, new TextFieldHandler());
     this.register(this.TYPE_PASSWORD, new PasswordFieldHandler());
@@ -115,36 +127,46 @@ class FormBuilder {
     this.register(this.TYPE_DATETIME, new TextFieldHandler());
   }
 
-  build(method, action, formId, modelInfoJSON) {
-      var modelInfo = new ModelInfo(modelInfoJSON);
+  onClick(event) {
+    event.preventDefault();
 
-      var form = $('<form role="form" method="' + method + '" action="' + action + '"></form>');
+    // TODO - do validation here
+    var attrInfoList = event.data.modelInfo.getAttrInfoList();
+    for (var i in attrInfoList) {
+      var attrInfo = attrInfoList[i];
+      console.log(attrInfo);
+    }
+  }
+
+  build() {
+      var form = $('<form role="form" method="' + this.method + '" action="' + this.action + '"></form>');
 
       // boxHeader
       var boxHeader = $('<div class="box-header"></div>');
-      var title = $('<div>' + modelInfo.getName() + '</div>');
+      var title = $('<div>' + this.modelInfo.getName() + '</div>');
       boxHeader.append(title);
 
       // boxBody
       var boxBody = $('<div class="box-body"></div>');
-      var attrInfoList = modelInfo.getAttrInfoList();
+      var attrInfoList = this.modelInfo.getAttrInfoList();
       for (var i in attrInfoList) {
         var attrInfo = attrInfoList[i];
         var type = attrInfo.getType();
         if (type in this.handlers) {
           var handler = this.handlers[type];
-          handler.appendField(boxBody, modelInfo, attrInfo);
+          handler.appendField(boxBody, this.modelInfo, attrInfo);
         }
       }
 
       // boxFooter
       var boxFooter = $('<div class="box-footer"></div>');
-      var submitButton = $('<button type="submit" class="btn btn-primary">Add</button>');
+      var submitButton = $('<button type="submit" class="btn btn-primary">' + this.buttonLabel + '</button>');
+      submitButton.bind('click', this, this.onClick);
       boxFooter.append(submitButton);
 
       form.append(boxHeader);
       form.append(boxBody);
       form.append(boxFooter);
-      $(formId).replaceWith(form);
+      $(this.formId).replaceWith(form);
   }
 }

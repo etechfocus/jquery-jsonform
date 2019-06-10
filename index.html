@@ -103,8 +103,7 @@
 <script>
 $(document).ready(function() {
   var options = [];
-  var formBuilder = new FormBuilder(options);
-  formBuilder.build('get', '#action', '#form1', 
+  var formBuilder1 = new FormBuilder('get', '#action', 'Add', '#form1', 
     {  
       "name": "User",
       "attrs": [
@@ -144,9 +143,10 @@ $(document).ready(function() {
           "value": "123"
         }
       ]
-    });
+    }, []);
+  formBuilder1.build();
 
-  formBuilder.build('get', '#action', '#form2', 
+  var formBuilder2 = new FormBuilder('get', '#action', 'Add', '#form2', 
     {  
       "name": "Product",
       "attrs": [
@@ -162,7 +162,8 @@ $(document).ready(function() {
           }
         }
       ]
-    });
+    }, []);
+  formBuilder2.build();
 });
 </script>
 

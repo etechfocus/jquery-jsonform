@@ -94,7 +94,7 @@ class TextFieldHandler {
     var fieldGroup = $('<div class="form-group"></div>');
     var fieldLabel = $('<label for="' + attrInfo.getId() +'">' + attrInfo.getName() + '</label>');
     fieldGroup.append(fieldLabel);
-    var fieldInput = $('<input type="text" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
+    var fieldInput = $('<textarea class="form-control" rows="3" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder=""></textarea>') 
     fieldGroup.append(fieldInput);
     boxBody.append(fieldGroup);
   }

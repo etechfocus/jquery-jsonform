@@ -70,6 +70,25 @@ class StringFieldHandler {
   }
 }
 
+class CurrencyFieldHandler {
+  appendField(boxBody, modelInfo, attrInfo) {
+    var fieldGroup = $('<div class="form-group"></div>');
+    var fieldLabel = $('<label for="' + attrInfo.getId() +'">' + attrInfo.getName() + '</label>');
+    fieldGroup.append(fieldLabel);
+    var fieldInputGroup = $('<div class="input-group"></div>');
+    var fieldIcon = $('<div class="input-group-addon"><i class="fa fa-dollar"></i></div>');
+    fieldInputGroup.append(fieldIcon);
+    var fieldInput = $('<input type="text" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
+    fieldInputGroup.append(fieldInput);
+    fieldGroup.append(fieldInputGroup);
+    boxBody.append(fieldGroup);
+  }
+  validate(modelInfo, attrInfo) {
+    // TODO - do validation on min, max ...etc
+    return true;
+  }
+}
+
 class TextFieldHandler {
   appendField(boxBody, modelInfo, attrInfo) {
     var fieldGroup = $('<div class="form-group"></div>');
@@ -143,7 +162,7 @@ class FormBuilder {
     this.register(this.TYPE_PASSWORD, new PasswordFieldHandler());
     this.register(this.TYPE_EMAIL, new StringFieldHandler());
     this.register(this.TYPE_TEXT, new TextFieldHandler());
-    this.register(this.TYPE_CURRENCY, new StringFieldHandler());
+    this.register(this.TYPE_CURRENCY, new CurrencyFieldHandler());
     this.register(this.TYPE_DATETIME, new StringFieldHandler());
   }
 

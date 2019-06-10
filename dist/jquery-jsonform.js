@@ -60,7 +60,7 @@ class TextFieldHandler {
     var fieldGroup = $('<div class="form-group"></div>');
     var fieldLabel = $('<label for="' + attrInfo.getId() +'">' + attrInfo.getName() + '</label>');
     fieldGroup.append(fieldLabel);
-    var fieldInput = $('<input type="text" class="form-control" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
+    var fieldInput = $('<input type="text" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
     fieldGroup.append(fieldInput);
     boxBody.append(fieldGroup);
   }
@@ -73,7 +73,7 @@ class PasswordFieldHandler {
     var fieldGroup = $('<div class="form-group"></div>');
     var fieldLabel = $('<label for="' + attrInfo.getId() +'">' + attrInfo.getName() + '</label>');
     fieldGroup.append(fieldLabel);
-    var fieldInput = $('<input type="password" class="form-control" id="' + attrInfo.getId() + '" placeholder="">') 
+    var fieldInput = $('<input type="password" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" placeholder="">') 
     fieldGroup.append(fieldInput);
     boxBody.append(fieldGroup);
   }
@@ -83,7 +83,7 @@ class PasswordFieldHandler {
 
 class HiddenFieldHandler {
   appendField(boxBody, modelInfo, attrInfo) {
-    var fieldInput = $('<input type="hidden" class="form-control" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
+    var fieldInput = $('<input type="hidden" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
     boxBody.append(fieldInput);
   }
   validate(modelInfo, attrInfo) {

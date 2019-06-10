@@ -128,6 +128,9 @@ class FormBuilder {
   }
 
   onClick(event) {
+  }
+
+  onClick1(event) {
     event.preventDefault();
 
     // TODO - do validation here
@@ -136,6 +139,9 @@ class FormBuilder {
       var attrInfo = attrInfoList[i];
       console.log(attrInfo);
     }
+
+    // submit form
+    $(event.data.formId).submit();
   }
 
   build() {

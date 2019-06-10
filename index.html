@@ -103,7 +103,7 @@
 <script>
 $(document).ready(function() {
   var options = [];
-  var formBuilder1 = new FormBuilder('get', '#action', 'Add', '#form1', 
+  var formBuilder1 = new FormBuilder('post', '#action', 'Add', '#form1', 
     {  
       "name": "User",
       "attrs": [
@@ -146,7 +146,7 @@ $(document).ready(function() {
     }, []);
   formBuilder1.build();
 
-  var formBuilder2 = new FormBuilder('get', '#action', 'Add', '#form2', 
+  var formBuilder2 = new FormBuilder('post', '#action', 'Add', '#form2', 
     {  
       "name": "Product",
       "attrs": [

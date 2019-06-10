@@ -56,14 +56,31 @@ class ModelInfo {
 // Handlers
 ////////////////////
 class TextFieldHandler {
-  getField(modelInfo, attrInfo) {
-    return $('<input type="text" class="form-control" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
+  appendField(boxBody, modelInfo, attrInfo) {
+    var fieldGroup = $('<div class="form-group"></div>');
+    var fieldLabel = $('<label for="' + attrInfo.getId() +'">' + attrInfo.getName() + '</label>');
+    fieldGroup.append(fieldLabel);
+    var fieldInput = $('<input type="text" class="form-control" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
+    fieldGroup.append(fieldInput);
+    boxBody.append(fieldGroup);
   }
 }
 
 class PasswordFieldHandler {
-  getField(modelInfo, attrInfo) {
-    return $('<input type="password" class="form-control" id="' + attrInfo.getId() + '" placeholder="">') 
+  appendField(boxBody, modelInfo, attrInfo) {
+    var fieldGroup = $('<div class="form-group"></div>');
+    var fieldLabel = $('<label for="' + attrInfo.getId() +'">' + attrInfo.getName() + '</label>');
+    fieldGroup.append(fieldLabel);
+    var fieldInput = $('<input type="password" class="form-control" id="' + attrInfo.getId() + '" placeholder="">') 
+    fieldGroup.append(fieldInput);
+    boxBody.append(fieldGroup);
+  }
+}
+
+class HiddenFieldHandler {
+  appendField(boxBody, modelInfo, attrInfo) {
+    var fieldInput = $('<input type="hidden" class="form-control" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
+    boxBody.append(fieldInput);
   }
 }
 
@@ -72,6 +89,7 @@ class PasswordFieldHandler {
 ////////////////////
 class FormBuilder {
 
+  TYPE_HIDDEN = "hidden";
   TYPE_STRING = "string";
   TYPE_PASSWORD = "password";
   TYPE_EMAIL = "email";
@@ -88,6 +106,7 @@ class FormBuilder {
   constructor(options) {
     this.options = options;
 
+    this.register(this.TYPE_HIDDEN, new HiddenFieldHandler());
     this.register(this.TYPE_STRING, new TextFieldHandler());
     this.register(this.TYPE_PASSWORD, new PasswordFieldHandler());
     this.register(this.TYPE_EMAIL, new TextFieldHandler());
@@ -111,13 +130,11 @@ class FormBuilder {
       var attrInfoList = modelInfo.getAttrInfoList();
       for (var i in attrInfoList) {
         var attrInfo = attrInfoList[i];
-        var fieldGroup = $('<div class="form-group"></div>');
-        var fieldLabel = $('<label for="' + attrInfo.getId() +'">' + attrInfo.getName() + '</label>');
-        fieldGroup.append(fieldLabel);
-        var handler = this.handlers[attrInfo.getType()];
-        var fieldInput = handler.getField(modelInfo, attrInfo);
-        fieldGroup.append(fieldInput);
-        boxBody.append(fieldGroup);
+        var type = attrInfo.getType();
+        if (type in this.handlers) {
+          var handler = this.handlers[type];
+          handler.appendField(boxBody, modelInfo, attrInfo);
+        }
       }
 
       // boxFooter

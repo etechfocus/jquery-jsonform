@@ -2,6 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="google" content="notranslate">
+  <meta http-equiv="Content-Language" content="en">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>jquery-jsonform</title>
   <!-- Tell the browser to be responsive to screen width -->
@@ -54,8 +56,8 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">NAVIGATION</li>
-        <li class="active"><a href="index.html"><i class="fa fa-book"></i> <span>Examples</span></a></li>
-        <li><a href="usage.html"><i class="fa fa-gear"></i> <span>Usage</span></a></li>
+        <li><a href="index.html"><i class="fa fa-book"></i> <span>Examples</span></a></li>
+        <li class="active"><a href="usage.html"><i class="fa fa-gear"></i> <span>Usage</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -67,7 +69,7 @@
 
     <section class="content-header">
         <h1>
-            Examples
+            Usage
         </h1>
     </section>
 
@@ -78,21 +80,25 @@
             <!-- left column -->
             <div class="col-xs-12">
                 <div class="box">
-                    <div id="form1"></div>
-                </div>
-                <div class="box">
                   <pre>
+
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jvectormap/2.0.4/jquery-jvectormap.min.js"&gt;&lt;/script&gt;
+&lt;script src="../dist/jquery-jsonform.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+$(document).ready(function() {
   var options = [];
-  var formBuilder = new FormBuilder('post', '#action', 'Add', '#form1', 
-    {  
+  var formBuilder = new FormBuilder('post', '#action', 'Add', '#form1',
+    {
       "name": "User",
       "attrs": [
         {
           "id": "username",
           "name": "User Name",
-          "type": "string", 
-          "value": "user1", 
-          "meta": 
+          "type": "string",
+          "value": "user1",
+          "meta":
           {
             "min": 4,
             "max": 64,
@@ -103,7 +109,7 @@
           "id": "email",
           "name": "Email",
           "type": "email",
-          "meta": 
+          "meta":
           {
             "min": 4,
             "max": 128,
@@ -125,55 +131,9 @@
       ]
     }, []);
   formBuilder.build();
-                  </pre>
-                </div>
-            </div>
-        </div>
+&lt;/script&gt;
 
-        <div class="row">
-            <!-- left column -->
-            <div class="col-xs-12">
-                <div class="box">
-                    <div id="form2"></div>
-                </div>
-                <div class="box">
-                    <pre>
-  var options = [];
-  var formBuilder = new FormBuilder('post', '#action', 'Add', '#form2', 
-    {  
-      "name": "Product",
-      "attrs": [
-        {
-          "id": "id",
-          "name": "Product Id",
-          "type": "string", 
-          "meta": 
-          {
-            "min": 4,
-            "max": 64,
-            "unique": "users"
-          }
-        },
-        {
-          "id": "description",
-          "name": "Description",
-          "type": "text", 
-          "meta": 
-          {
-          }
-        },
-        {
-          "id": "price",
-          "name": "Price",
-          "type": "currency", 
-          "meta": 
-          {
-          }
-        }
-      ]
-    }, []);
-  formBuilder.build();
-                    </pre>
+                  </pre>
                 </div>
             </div>
         </div>
@@ -181,94 +141,6 @@
     </section>
   </div>
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jvectormap/2.0.4/jquery-jvectormap.min.js"></script>
-<script src="dist/jquery-jsonform.js"></script>
-<script>
-$(document).ready(function() {
-  var options = [];
-  var formBuilder1 = new FormBuilder('post', '#action', 'Add', '#form1', 
-    {  
-      "name": "User",
-      "attrs": [
-        {
-          "id": "username",
-          "name": "User Name",
-          "type": "string", 
-          "value": "user1", 
-          "meta": 
-          {
-            "min": 4,
-            "max": 64,
-            "unique": "users"
-          }
-        },
-        {
-          "id": "email",
-          "name": "Email",
-          "type": "email",
-          "meta": 
-          {
-            "min": 4,
-            "max": 128,
-            "unique": "users"
-          }
-        },
-        {
-          "id": "password",
-          "name": "Password",
-          "type": "password",
-          "meta": []
-        },
-        {
-          "id": "id",
-          "name": "id",
-          "type": "hidden",
-          "value": "123"
-        }
-      ]
-    }, []);
-  formBuilder1.build();
-
-  var formBuilder2 = new FormBuilder('post', '#action', 'Add', '#form2', 
-    {  
-      "name": "Product",
-      "attrs": [
-        {
-          "id": "id",
-          "name": "Product Id",
-          "type": "string", 
-          "meta": 
-          {
-            "min": 4,
-            "max": 64,
-            "unique": "users"
-          }
-        },
-        {
-          "id": "description",
-          "name": "Description",
-          "type": "text", 
-          "meta": 
-          {
-          }
-        },
-        {
-          "id": "price",
-          "name": "Price",
-          "type": "currency", 
-          "meta": 
-          {
-          }
-        }
-      ]
-    }, []);
-  formBuilder2.build();
-});
-</script>
 
 </body>
 </html>

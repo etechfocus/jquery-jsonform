@@ -134,17 +134,6 @@ class HiddenFieldHandler {
 ////////////////////
 class FormBuilder {
 
-  TYPE_HIDDEN = "hidden";
-  TYPE_STRING = "string";
-  TYPE_PASSWORD = "password";
-  TYPE_EMAIL = "email";
-  TYPE_TEXT = "text";
-  TYPE_CURRENCY = "currency";
-  TYPE_DATETIME = "datetime";
-
-  _handlers = [];
-  _sections = [];
-
   constructor(options) {
 
     var defaultOptions = {
@@ -163,17 +152,17 @@ class FormBuilder {
     this.options = options;
 
     // register handles
-    this.registerHandler(this.TYPE_HIDDEN, new HiddenFieldHandler());
-    this.registerHandler(this.TYPE_STRING, new StringFieldHandler());
-    this.registerHandler(this.TYPE_PASSWORD, new PasswordFieldHandler());
-    this.registerHandler(this.TYPE_EMAIL, new StringFieldHandler());
-    this.registerHandler(this.TYPE_TEXT, new TextFieldHandler());
-    this.registerHandler(this.TYPE_CURRENCY, new CurrencyFieldHandler());
-    this.registerHandler(this.TYPE_DATETIME, new StringFieldHandler());
+    this.registerHandler(FormBuilder.TYPE_HIDDEN, new HiddenFieldHandler());
+    this.registerHandler(FormBuilder.TYPE_STRING, new StringFieldHandler());
+    this.registerHandler(FormBuilder.TYPE_PASSWORD, new PasswordFieldHandler());
+    this.registerHandler(FormBuilder.TYPE_EMAIL, new StringFieldHandler());
+    this.registerHandler(FormBuilder.TYPE_TEXT, new TextFieldHandler());
+    this.registerHandler(FormBuilder.TYPE_CURRENCY, new CurrencyFieldHandler());
+    this.registerHandler(FormBuilder.TYPE_DATETIME, new StringFieldHandler());
   }
 
   registerHandler(type, handler) {
-    this._handlers[type] = handler;
+    FormBuilder.handlers[type] = handler;
   }
 
   onSubmit(event) {
@@ -207,11 +196,11 @@ class FormBuilder {
   }
 
   getHandlers() {
-    return this._handlers;
+    return FormBuilder.handlers;
   }
 
   getHandler(type) {
-    return this._handlers[type];
+    return FormBuilder.handlers[type];
   }
 
   createSection(sectionId, modelInfoJson) {
@@ -229,8 +218,8 @@ class FormBuilder {
     for (var i in attrInfoList) {
       var attrInfo = attrInfoList[i];
       var type = attrInfo.getType();
-      if (type in this._handlers) {
-        var handler = this._handlers[type];
+      if (type in FormBuilder.handlers) {
+        var handler = FormBuilder.handlers[type];
         handler.appendField(boxBody, modelInfo, attrInfo);
       }
     }
@@ -244,7 +233,7 @@ class FormBuilder {
 
     $(sectionId).replaceWith(box);
 
-    this._sections.push({'modelInfo':modelInfo, 'box':box});
+    FormBuilder.sections.push({'modelInfo':modelInfo, 'box':box});
   }
 
   closeForm(formFooterId) {
@@ -253,3 +242,15 @@ class FormBuilder {
       this._formFooter.bind('click', this, this.onSubmit);
   }
 }
+
+FormBuilder.TYPE_HIDDEN = "hidden";
+FormBuilder.TYPE_STRING = "string";
+FormBuilder.TYPE_PASSWORD = "password";
+FormBuilder.TYPE_EMAIL = "email";
+FormBuilder.TYPE_TEXT = "text";
+FormBuilder.TYPE_CURRENCY = "currency";
+FormBuilder.TYPE_DATETIME = "datetime";
+
+FormBuilder.handlers = [];
+FormBuilder.sections = [];
+

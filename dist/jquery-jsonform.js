@@ -214,9 +214,9 @@ class FormBuilder {
 
       form.bind('submit', this, this.onSubmit);
 
-      form.append(boxHeader);
-      form.append(boxBody);
-      form.append(boxFooter);
+      form.append(boxHeader).trigger("create");
+      form.append(boxBody).trigger("create");
+      form.append(boxFooter).trigger("create");
       $(this.formId).replaceWith(form);
   }
 }

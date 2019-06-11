@@ -166,8 +166,7 @@ class FormBuilder {
   }
 
   onSubmit(event) {
-    event.preventDefault();
-
+/*
     for (var i in FormBuilder.sections) {
       var section = FormBuilder.sections[i];
       var modelInfo = section['modelInfo'];
@@ -185,14 +184,16 @@ class FormBuilder {
         }
       }
     }
+*/
 
     // everything is good, let's submit
-    $(this).unbind().submit();
+    return true; 
   }
 
   openForm(formHeaderId) {
     this._formHeader = $('<form role="form" method="' + this.options.method + '" action="' + this.options.action + '"></form>');
     $(formHeaderId).wrap(this._formHeader);
+    $(document).on('submit', this._formHeader, this.onSubmit);
   }
 
   getHandlers() {
@@ -239,7 +240,6 @@ class FormBuilder {
   closeForm(formFooterId) {
     this._formFooter = $('<input type="submit" class="btn btn-primary" value="' + this.options.buttonLabel + '">');
     $(formFooterId).replaceWith(this._formFooter);
-      this._formFooter.bind('click', this, this.onSubmit);
   }
 }
 

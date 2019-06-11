@@ -76,103 +76,11 @@
         <div class="row">
             <!-- left column -->
             <div class="col-xs-12">
-                <div class="box">
-                    <div id="form1"></div>
-                </div>
-                <div class="box">
-                  <pre>
-  var options = [];
-  var formBuilder = new FormBuilder('post', '#action', 'Add', '#form1', 
-    {  
-      "name": "User",
-      "attrs": [
-        {
-          "id": "username",
-          "name": "User Name",
-          "type": "string", 
-          "value": "user1", 
-          "meta": 
-          {
-            "min": 4,
-            "max": 64,
-            "unique": "users"
-          }
-        },
-        {
-          "id": "email",
-          "name": "Email",
-          "type": "email",
-          "meta": 
-          {
-            "min": 4,
-            "max": 128,
-            "unique": "users"
-          }
-        },
-        {
-          "id": "password",
-          "name": "Password",
-          "type": "password",
-          "meta": []
-        },
-        {
-          "id": "id",
-          "name": "id",
-          "type": "hidden",
-          "value": "123"
-        }
-      ]
-    }, []);
-  formBuilder.build();
-                  </pre>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- left column -->
-            <div class="col-xs-12">
-                <div class="box">
-                    <div id="form2"></div>
-                </div>
-                <div class="box">
-                    <pre>
-  var options = [];
-  var formBuilder = new FormBuilder('post', '#action', 'Add', '#form2', 
-    {  
-      "name": "Product",
-      "attrs": [
-        {
-          "id": "id",
-          "name": "Product Id",
-          "type": "string", 
-          "meta": 
-          {
-            "min": 4,
-            "max": 64,
-            "unique": "users"
-          }
-        },
-        {
-          "id": "description",
-          "name": "Description",
-          "type": "text", 
-          "meta": 
-          {
-          }
-        },
-        {
-          "id": "price",
-          "name": "Price",
-          "type": "currency", 
-          "meta": 
-          {
-          }
-        }
-      ]
-    }, []);
-  formBuilder.build();
-                    </pre>
+                <div id="formHeaderId">
+                  <div class="box">
+                      <div id="formSection"></div>
+                  </div>
+                  <div id="formFooterId"></div>
                 </div>
             </div>
         </div>
@@ -188,8 +96,14 @@
 <script src="dist/jquery-jsonform.js"></script>
 <script>
 $(document).ready(function() {
-  var options = [];
-  var formBuilder1 = new FormBuilder('post', '#action', 'Add', '#form1', 
+  var options = {
+    method: 'post',
+    action: '#action',
+    buttonLabel: 'Add'
+  };
+  var formBuilder = new FormBuilder(options);
+  formBuilder.openForm('#formHeaderId');
+  formBuilder.createSection('#formSection', 
     {  
       "name": "User",
       "attrs": [
@@ -230,42 +144,7 @@ $(document).ready(function() {
         }
       ]
     }, []);
-  formBuilder1.build();
-
-  var formBuilder2 = new FormBuilder('post', '#action', 'Add', '#form2', 
-    {  
-      "name": "Product",
-      "attrs": [
-        {
-          "id": "id",
-          "name": "Product Id",
-          "type": "string", 
-          "meta": 
-          {
-            "min": 4,
-            "max": 64,
-            "unique": "users"
-          }
-        },
-        {
-          "id": "description",
-          "name": "Description",
-          "type": "text", 
-          "meta": 
-          {
-          }
-        },
-        {
-          "id": "price",
-          "name": "Price",
-          "type": "currency", 
-          "meta": 
-          {
-          }
-        }
-      ]
-    }, []);
-  formBuilder2.build();
+  formBuilder.closeForm('#formFooterId');
 });
 </script>
 

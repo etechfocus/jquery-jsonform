@@ -168,8 +168,8 @@ class FormBuilder {
   onSubmit(event) {
     event.preventDefault();
 
-    for (var i in event.data._sections) {
-      var section = event.data._sections[i];
+    for (var i in FormBuilder.sections) {
+      var section = FormBuilder.sections[i];
       var modelInfo = section['modelInfo'];
       var attrInfoList = section['modelInfo'].getAttrInfoList();
       for (var i in attrInfoList) {
@@ -253,4 +253,3 @@ FormBuilder.TYPE_DATETIME = "datetime";
 
 FormBuilder.handlers = [];
 FormBuilder.sections = [];
-

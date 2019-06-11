@@ -142,43 +142,57 @@ class FormBuilder {
   TYPE_CURRENCY = "currency";
   TYPE_DATETIME = "datetime";
 
-  handlers = [];
+  _handlers = [];
+  _sections = [];
 
-  register(type, handler) {
-    this.handlers[type] = handler;
-  }
+  constructor(options) {
 
-  constructor(method, action, buttonLabel,  formId, modelInfoJSON, options) {
-    this.method = method;
-    this.action = action;
-    this.formId = formId;
-    this.buttonLabel = buttonLabel;
-    this.modelInfo = new ModelInfo(modelInfoJSON);
+    var defaultOptions = {
+      method: 'post',  
+      action: '#',  
+      buttonLabel: 'Submit'  
+    };
+
+    options = options || {};
+    for (var opt in defaultOptions) {
+        if (defaultOptions.hasOwnProperty(opt) && !options.hasOwnProperty(opt)) {
+            options[opt] = default_options[opt];
+        }
+    }
+
     this.options = options;
 
     // register handles
-    this.register(this.TYPE_HIDDEN, new HiddenFieldHandler());
-    this.register(this.TYPE_STRING, new StringFieldHandler());
-    this.register(this.TYPE_PASSWORD, new PasswordFieldHandler());
-    this.register(this.TYPE_EMAIL, new StringFieldHandler());
-    this.register(this.TYPE_TEXT, new TextFieldHandler());
-    this.register(this.TYPE_CURRENCY, new CurrencyFieldHandler());
-    this.register(this.TYPE_DATETIME, new StringFieldHandler());
+    this.registerHandler(this.TYPE_HIDDEN, new HiddenFieldHandler());
+    this.registerHandler(this.TYPE_STRING, new StringFieldHandler());
+    this.registerHandler(this.TYPE_PASSWORD, new PasswordFieldHandler());
+    this.registerHandler(this.TYPE_EMAIL, new StringFieldHandler());
+    this.registerHandler(this.TYPE_TEXT, new TextFieldHandler());
+    this.registerHandler(this.TYPE_CURRENCY, new CurrencyFieldHandler());
+    this.registerHandler(this.TYPE_DATETIME, new StringFieldHandler());
+  }
+
+  registerHandler(type, handler) {
+    this._handlers[type] = handler;
   }
 
   onSubmit(event) {
     event.preventDefault();
 
-    var attrInfoList = event.data.modelInfo.getAttrInfoList();
-    for (var i in attrInfoList) {
-      var attrInfo = attrInfoList[i];
-      var type = attrInfo.getType();
-      if (type in event.data.handlers) {
-        var handler = event.data.handlers[type];
-        var isValid = handler.validate(event.data.modelInfo, attrInfo);
-        if (!isValid) {
-          // TODO - display error
-          return false; 
+    for (var i in event.data._sections) {
+      var section = event.data._sections[i];
+      var modelInfo = section['modelInfo'];
+      var attrInfoList = section['modelInfo'].getAttrInfoList();
+      for (var i in attrInfoList) {
+        var attrInfo = attrInfoList[i];
+        var type = attrInfo.getType();
+        if (type in event.data.getHandlers()) {
+          var handler = event.data.getHandler(type);
+          var isValid = handler.validate(modelInfo, attrInfo);
+          if (!isValid) {
+            // TODO - display error
+            return false; 
+          }
         }
       }
     }
@@ -187,36 +201,55 @@ class FormBuilder {
     $(this).unbind().submit();
   }
 
-  build() {
-      var form = $('<form role="form" method="' + this.method + '" action="' + this.action + '"></form>');
+  openForm(formHeaderId) {
+    this._formHeader = $('<form role="form" method="' + this.options.method + '" action="' + this.options.action + '"></form>');
+    $(formHeaderId).wrap(this._formHeader);
+  }
 
-      // boxHeader
-      var boxHeader = $('<div class="box-header"></div>');
-      var title = $('<div>' + this.modelInfo.getName() + '</div>');
-      boxHeader.append(title);
+  getHandlers() {
+    return this._handlers;
+  }
 
-      // boxBody
-      var boxBody = $('<div class="box-body"></div>');
-      var attrInfoList = this.modelInfo.getAttrInfoList();
-      for (var i in attrInfoList) {
-        var attrInfo = attrInfoList[i];
-        var type = attrInfo.getType();
-        if (type in this.handlers) {
-          var handler = this.handlers[type];
-          handler.appendField(boxBody, this.modelInfo, attrInfo);
-        }
+  getHandler(type) {
+    return this._handlers[type];
+  }
+
+  createSection(sectionId, modelInfoJson) {
+    var modelInfo = new ModelInfo(modelInfoJson);
+    var box = $('<div class="box"></div>');
+
+    // boxHeader
+    var boxHeader = $('<div class="box-header"></div>');
+    var title = $('<div>' + modelInfo.getName() + '</div>');
+    boxHeader.append(title);
+
+    // boxBody
+    var boxBody = $('<div class="box-body"></div>');
+    var attrInfoList = modelInfo.getAttrInfoList();
+    for (var i in attrInfoList) {
+      var attrInfo = attrInfoList[i];
+      var type = attrInfo.getType();
+      if (type in this._handlers) {
+        var handler = this._handlers[type];
+        handler.appendField(boxBody, modelInfo, attrInfo);
       }
+    }
 
-      // boxFooter
-      var boxFooter = $('<div class="box-footer"></div>');
-      var submitButton = $('<input type="submit" class="btn btn-primary" value="' + this.buttonLabel + '">');
-      boxFooter.append(submitButton);
+    // boxFooter
+    var boxFooter = $('<div class="box-footer"></div>');
 
-      form.bind('submit', this, this.onSubmit);
+    box.append(boxHeader);
+    box.append(boxBody);
+    box.append(boxFooter);
 
-      form.append(boxHeader);
-      form.append(boxBody);
-      form.append(boxFooter);
-      $(this.formId).replaceWith(form);
+    $(sectionId).replaceWith(box);
+
+    this._sections.push({'modelInfo':modelInfo, 'box':box});
+  }
+
+  closeForm(formFooterId) {
+    this._formFooter = $('<input type="submit" class="btn btn-primary" value="' + this.options.buttonLabel + '">');
+    $(formFooterId).replaceWith(this._formFooter);
+      this._formFooter.bind('click', this, this.onSubmit);
   }
 }

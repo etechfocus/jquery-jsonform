@@ -88,8 +88,13 @@
 &lt;script src="../dist/jquery-jsonform.js"&gt;&lt;/script&gt;
 &lt;script&gt;
 $(document).ready(function() {
-  var options = [];
-  var formBuilder = new FormBuilder('post', '#action', 'Add', '#form1',
+  var options = {
+    method: 'post',
+    action: '#action',
+    buttonLabel: 'Add'
+  };
+  var formBuilder = new FormBuilder(options);
+  formBuilder.createSection('#formSection',
     {
       "name": "User",
       "attrs": [
@@ -130,7 +135,8 @@ $(document).ready(function() {
         }
       ]
     }, []);
-  formBuilder.build();
+  formBuilder.build('#formHeaderId', '#formFooterId');
+});
 &lt;/script&gt;
 
                   </pre>

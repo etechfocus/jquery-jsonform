@@ -59,10 +59,10 @@ class StringFieldHandler {
   appendField(boxBody, modelInfo, attrInfo) {
     var fieldGroup = $('<div class="form-group"></div>');
     var fieldLabel = $('<label for="' + attrInfo.getId() +'">' + attrInfo.getName() + '</label>');
-    fieldGroup.append(fieldLabel);
+    fieldGroup.append(fieldLabel).trigger("create");
     var fieldInput = $('<input type="text" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
-    fieldGroup.append(fieldInput);
-    boxBody.append(fieldGroup);
+    fieldGroup.append(fieldInput).trigger("create");
+    boxBody.append(fieldGroup).trigger("create");
   }
   validate(modelInfo, attrInfo) {
     // TODO - do validation on min, max ...etc
@@ -74,14 +74,14 @@ class CurrencyFieldHandler {
   appendField(boxBody, modelInfo, attrInfo) {
     var fieldGroup = $('<div class="form-group"></div>');
     var fieldLabel = $('<label for="' + attrInfo.getId() +'">' + attrInfo.getName() + '</label>');
-    fieldGroup.append(fieldLabel);
+    fieldGroup.append(fieldLabel).trigger("create");
     var fieldInputGroup = $('<div class="input-group"></div>');
     var fieldIcon = $('<div class="input-group-addon"><i class="fa fa-dollar"></i></div>');
-    fieldInputGroup.append(fieldIcon);
+    fieldInputGroup.append(fieldIcon).trigger("create");
     var fieldInput = $('<input type="text" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
-    fieldInputGroup.append(fieldInput);
-    fieldGroup.append(fieldInputGroup);
-    boxBody.append(fieldGroup);
+    fieldInputGroup.append(fieldInput).trigger("create");
+    fieldGroup.append(fieldInputGroup).trigger("create");
+    boxBody.append(fieldGroup).trigger("create");
   }
   validate(modelInfo, attrInfo) {
     // TODO - do validation on min, max ...etc
@@ -93,10 +93,10 @@ class TextFieldHandler {
   appendField(boxBody, modelInfo, attrInfo) {
     var fieldGroup = $('<div class="form-group"></div>');
     var fieldLabel = $('<label for="' + attrInfo.getId() +'">' + attrInfo.getName() + '</label>');
-    fieldGroup.append(fieldLabel);
+    fieldGroup.append(fieldLabel).trigger("create");
     var fieldInput = $('<textarea class="form-control" rows="3" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder=""></textarea>') 
-    fieldGroup.append(fieldInput);
-    boxBody.append(fieldGroup);
+    fieldGroup.append(fieldInput).trigger("create");
+    boxBody.append(fieldGroup).trigger("create");
   }
   validate(modelInfo, attrInfo) {
     // TODO - do validation on min, max ...etc
@@ -108,10 +108,10 @@ class PasswordFieldHandler {
   appendField(boxBody, modelInfo, attrInfo) {
     var fieldGroup = $('<div class="form-group"></div>');
     var fieldLabel = $('<label for="' + attrInfo.getId() +'">' + attrInfo.getName() + '</label>');
-    fieldGroup.append(fieldLabel);
+    fieldGroup.append(fieldLabel).trigger("create");
     var fieldInput = $('<input type="password" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" placeholder="">') 
-    fieldGroup.append(fieldInput);
-    boxBody.append(fieldGroup);
+    fieldGroup.append(fieldInput).trigger("create");
+    boxBody.append(fieldGroup).trigger("create");
   }
   validate(modelInfo, attrInfo) {
     // TODO - do validation on min, max ...etc
@@ -122,7 +122,7 @@ class PasswordFieldHandler {
 class HiddenFieldHandler {
   appendField(boxBody, modelInfo, attrInfo) {
     var fieldInput = $('<input type="hidden" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">') 
-    boxBody.append(fieldInput);
+    boxBody.append(fieldInput).trigger("create");
   }
   validate(modelInfo, attrInfo) {
     return true;
@@ -193,7 +193,7 @@ class FormBuilder {
       // boxHeader
       var boxHeader = $('<div class="box-header"></div>');
       var title = $('<div>' + this.modelInfo.getName() + '</div>');
-      boxHeader.append(title);
+      boxHeader.append(title).trigger("create");
 
       // boxBody
       var boxBody = $('<div class="box-body"></div>');

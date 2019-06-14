@@ -1,0 +1,53 @@
+html {
+    body {
+        //height: auto;
+
+        //  Combo field
+        .form-control-combo {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        //  Dynamic dropdown list
+        .combobox {
+            position: absolute;
+            z-index: 999;
+
+            .combobox-content-wrap {
+                position: relative;
+                display: block;
+                background-color: #fff;
+                border: 1px solid #ccc;
+            }
+
+            .combobox-search {
+                position: absolute;
+                width: 100%;
+                height: 55px;
+                padding: 10px;
+                background-color: #fff;
+            }
+
+            .combobox-content {
+                max-height: 200px;
+                margin-bottom: 55px;
+                overflow: auto;
+
+                .combobox-item {
+                    padding: 10px;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: #ddd;
+
+                    }
+                }
+
+            }
+        }
+    }
+
+}

@@ -94,6 +94,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jvectormap/2.0.4/jquery-jvectormap.min.js"></script>
 <script src="dist/jquery-jsonform.js"></script>
+<link rel="stylesheet" href="dist/jquery-jsonform.css">
 <script>
 $(document).ready(function() {
   var options = {
@@ -103,16 +104,16 @@ $(document).ready(function() {
   };
   var formBuilder = new FormBuilder(options);
   formBuilder.openForm('#formHeaderId');
-  formBuilder.createSection('#formSection', 
-    {  
+  formBuilder.createSection('#formSection',
+    {
       "name": "User",
       "attrs": [
         {
           "id": "username",
           "name": "User Name",
-          "type": "string", 
-          "value": "user1", 
-          "meta": 
+          "type": "string",
+          "value": "user1",
+          "meta":
           {
             "min": 4,
             "max": 64,
@@ -123,7 +124,7 @@ $(document).ready(function() {
           "id": "email",
           "name": "Email",
           "type": "email",
-          "meta": 
+          "meta":
           {
             "min": 4,
             "max": 128,

@@ -132,10 +132,12 @@ class ModelInfo {
 	}
 
 	getAttrInfoList() {
-		var attrInfoList = [];
-		for (var i in this.props.attrs) {
+		const attrInfoList = [];
+
+		for (const i in this.props.attrs) {
 			attrInfoList.push(new AttrInfo(this.props.attrs[i]));
 		}
+
 		return attrInfoList;
 	}
 }
@@ -144,11 +146,12 @@ class ModelInfo {
 // Handlers
 ////////////////////
 class StringFieldHandler {
+
 	appendField(boxBody, modelInfo, attrInfo) {
-		var fieldGroup = $('<div class="form-group"></div>');
-		var fieldLabel = $('<label for="' + attrInfo.getId() + '">' + attrInfo.getName() + '</label>');
+		const fieldGroup = $('<div class="form-group"></div>');
+		const fieldLabel = $('<label for="' + attrInfo.getId() + '">' + attrInfo.getName() + '</label>');
 		fieldGroup.append(fieldLabel);
-		var fieldInput = $('<input type="text" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">')
+		const fieldInput = $('<input type="text" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">');
 		fieldGroup.append(fieldInput);
 		boxBody.append(fieldGroup);
 	}
@@ -157,17 +160,18 @@ class StringFieldHandler {
 		// TODO - do validation on min, max ...etc
 		return true;
 	}
+
 }
 
 class CurrencyFieldHandler {
 	appendField(boxBody, modelInfo, attrInfo) {
-		var fieldGroup = $('<div class="form-group"></div>');
-		var fieldLabel = $('<label for="' + attrInfo.getId() + '">' + attrInfo.getName() + '</label>');
+		const fieldGroup = $('<div class="form-group"></div>');
+		const fieldLabel = $('<label for="' + attrInfo.getId() + '">' + attrInfo.getName() + '</label>');
 		fieldGroup.append(fieldLabel);
-		var fieldInputGroup = $('<div class="input-group"></div>');
-		var fieldIcon = $('<div class="input-group-addon"><i class="fa fa-dollar"></i></div>');
+		const fieldInputGroup = $('<div class="input-group"></div>');
+		const fieldIcon = $('<div class="input-group-addon"><i class="fa fa-dollar"></i></div>');
 		fieldInputGroup.append(fieldIcon);
-		var fieldInput = $('<input type="text" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">')
+		const fieldInput = $('<input type="text" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">');
 		fieldInputGroup.append(fieldInput);
 		fieldGroup.append(fieldInputGroup);
 		boxBody.append(fieldGroup);
@@ -177,14 +181,15 @@ class CurrencyFieldHandler {
 		// TODO - do validation on min, max ...etc
 		return true;
 	}
+
 }
 
 class TextFieldHandler {
 	appendField(boxBody, modelInfo, attrInfo) {
-		var fieldGroup = $('<div class="form-group"></div>');
-		var fieldLabel = $('<label for="' + attrInfo.getId() + '">' + attrInfo.getName() + '</label>');
+		const fieldGroup = $('<div class="form-group"></div>');
+		const fieldLabel = $('<label for="' + attrInfo.getId() + '">' + attrInfo.getName() + '</label>');
 		fieldGroup.append(fieldLabel);
-		var fieldInput = $('<textarea class="form-control" rows="3" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder=""></textarea>')
+		const fieldInput = $('<textarea class="form-control" rows="3" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder=""></textarea>');
 		fieldGroup.append(fieldInput);
 		boxBody.append(fieldGroup);
 	}
@@ -197,10 +202,10 @@ class TextFieldHandler {
 
 class PasswordFieldHandler {
 	appendField(boxBody, modelInfo, attrInfo) {
-		var fieldGroup = $('<div class="form-group"></div>');
-		var fieldLabel = $('<label for="' + attrInfo.getId() + '">' + attrInfo.getName() + '</label>');
+		const fieldGroup = $('<div class="form-group"></div>');
+		const fieldLabel = $('<label for="' + attrInfo.getId() + '">' + attrInfo.getName() + '</label>');
 		fieldGroup.append(fieldLabel);
-		var fieldInput = $('<input type="password" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" placeholder="">')
+		const fieldInput = $('<input type="password" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" placeholder="">');
 		fieldGroup.append(fieldInput);
 		boxBody.append(fieldGroup);
 	}
@@ -212,8 +217,9 @@ class PasswordFieldHandler {
 }
 
 class HiddenFieldHandler {
+
 	appendField(boxBody, modelInfo, attrInfo) {
-		var fieldInput = $('<input type="hidden" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">')
+		const fieldInput = $('<input type="hidden" class="form-control" name="' + attrInfo.getId() + '" id="' + attrInfo.getId() + '" value="' + attrInfo.getValue() + '" placeholder="">');
 		boxBody.append(fieldInput);
 	}
 
@@ -223,7 +229,7 @@ class HiddenFieldHandler {
 }
 
 /**
- * Combo form field
+ * Combo form field handler. Create field instance.
  */
 class ComboFieldHandler {
 
@@ -257,81 +263,13 @@ class ComboFieldHandler {
 
 }
 
+/**
+ * Combo form field with listeners, handlers and view layout.
+ */
 class ComboField {
 
-
 	/**
-	 * Form container
-	 *
-	 * @type {object|null}
-	 */
-	boxBody = null;
-
-	/**
-	 * Model info
-	 *
-	 * @type {ModelInfo|null}
-	 */
-	modelInfo = null;
-
-	/**
-	 * Attribute info
-	 *
-	 * @type {AttrInfo|null}
-	 */
-	attrInfo = null;
-
-	/**
-	 * Meta info
-	 *
-	 * @type {ComboMeta|null}
-	 */
-	meta = null;
-
-	/**
-	 * `value` key in input data
-	 *
-	 * @type {string}
-	 */
-	valueKey = 'value';
-
-	/**
-	 * `name` key in input data
-	 *
-	 * @type {string}
-	 */
-	nameKey = 'name';
-
-	/**
-	 * Current data in select. If in `meta` set `typeaheadUrl` option will be saved last result.
-	 *
-	 * @type {object[]|null}
-	 */
-	data = null;
-
-	/**
-	 * Field group/wrap where place field with field.
-	 *
-	 * @type {object|null}
-	 */
-	eFieldGroup = null;
-
-	/**
-	 * Current field.
-	 *
-	 * @type {object|null}
-	 */
-	eField = null;
-
-	/**
-	 * Current active dropdown list.
-	 *
-	 * @type {object|null}
-	 */
-	eActiveDropdownList = null;
-
-	/**
-	 * @param {object} boxBody - Form container
+	 * @param {*} boxBody - Form container
 	 * @param {ModelInfo} modelInfo
 	 * @param {AttrInfo} attrInfo
 	 */
@@ -340,14 +278,84 @@ class ComboField {
 		modelInfo,
 		attrInfo
 	) {
+		/**
+		 * Form container
+		 *
+		 * @type {object|null}
+		 */
 		this.boxBody = boxBody;
+
+		/**
+		 * Model info
+		 *
+		 * @type {ModelInfo|null}
+		 */
 		this.modelInfo = modelInfo;
+
+		/**
+		 * Attribute info
+		 *
+		 * @type {AttrInfo|null}
+		 */
 		this.attrInfo = attrInfo;
 
-		/** @type ComboMeta */
+		/**
+		 * Meta info
+		 *
+		 * @type {ComboMeta|null}
+		 */
 		this.meta = attrInfo.getMeta(ComboMeta);
 
-		this.beforeInit()
+		/**
+		 * `value` key in input data
+		 *
+		 * @type {string}
+		 */
+		this.valueKey = 'value';
+
+		/**
+		 * `name` key in input data
+		 *
+		 * @type {string}
+		 */
+		this.nameKey = 'name';
+
+		/**
+		 * Current data in select. If in `meta` set `typeaheadUrl` option will be saved last result.
+		 *
+		 * @type {object[]|null}
+		 */
+		this.data = null;
+
+		/**
+		 * Input search value in search field in dropdown list.
+		 *
+		 * @param {string|null}
+		 */
+		this.inputSearchValue = null;
+
+		/**
+		 * Field group/wrap where place field with field.
+		 *
+		 * @type {object|null}
+		 */
+		this.eFieldGroup = null;
+
+		/**
+		 * Current field.
+		 *
+		 * @type {object|null}
+		 */
+		this.eField = null;
+
+		/**
+		 * Current active dropdown list.
+		 *
+		 * @type {object|null}
+		 */
+		this.eActiveDropdownList = null;
+
+		this.beforeInit();
 	}
 
 	/**
@@ -383,6 +391,34 @@ class ComboField {
 		//	@todo: Add data filter allow specific properties and throw excess
 
 		return this.data;
+	}
+
+	/**
+	 * Return input search value
+	 *
+	 * @returns {*}
+	 */
+	getInputSearchValue() {
+		if (typeof this.inputSearchValue === 'string') {
+			return this.inputSearchValue.trim();
+		}
+
+		return '';
+	}
+
+	/**
+	 * Set input search value
+	 *
+	 * @param {string} inputSearchValue
+	 */
+	setInputSearchValue(inputSearchValue) {
+		if (typeof inputSearchValue === 'string') {
+			this.inputSearchValue = inputSearchValue;
+
+			return;
+		}
+
+		this.inputSearchValue = '';
 	}
 
 	/**
@@ -431,7 +467,6 @@ class ComboField {
 		const fieldLabel = $('<label for="' + this.attrInfo.getId() + '">' + this.attrInfo.getName() + '</label>');
 		this.eFieldGroup.append(fieldLabel);
 		this.eFieldGroup.append(this.eField);
-
 		this.boxBody.append(this.eFieldGroup);
 
 		//	Add actions to the field
@@ -451,10 +486,9 @@ class ComboField {
 			if (fieldInFocus) {
 				this.eActiveDropdownList = this.addDropdownList(this.eField, this.getData());
 				this.toPosition();
-				//this.toPosition(eField, eActiveDropdownList);
 				this.toSize(this.eField, this.eActiveDropdownList);
-
-				this.eActiveDropdownList.find('.combobox-search input').focus();
+				//	Filter dropdown list
+				this.filterDropdownList(this.getInputSearchValue());
 			} else {
 				this.removeDropdownList(this.eActiveDropdownList);
 			}
@@ -518,34 +552,23 @@ class ComboField {
 
 		//	Dropdown search
 		eBody.on('keyup', '.combobox-search', (e) => {
-			//	Skip if not active
-			if (!this.eActiveDropdownList) {
-				return;
+			//	Search by typehead URL
+			if (this.meta.getTypeaheadUrl()) {
+				$.ajax({
+					type: 'POST',
+					url: this.meta.getTypeaheadUrl(),
+					data: {
+						inputSearchValue: this.getInputSearchValue()
+					},
+					success: function (response) {
+						//	@todo: Filter data from server and update dropdown list
+					}
+				});
 			}
-
-			const value = e.target.value;
-			let items = '';
-
-			this.getData().forEach((item) => {
-				//	Find matches
-				if (value.length > 0 && item.name.toLowerCase().indexOf(value.toLowerCase()) === -1) {
-					return;
-				}
-
-				items += '\
-						<div class="combobox-item" data-value="' + item.value + '">\
-							<span class="name">\
-								' + item.name + '\
-							</span>\
-						</div>\
-						';
-			});
-
-			this.eActiveDropdownList.find('.combobox-content')
-				.empty()
-				.html(items);
-
-			this.toPosition();
+			//	Search by static data
+			else {
+				this.filterDropdownList(e.target.value);
+			}
 		});
 	}
 
@@ -560,6 +583,7 @@ class ComboField {
 						<input \
 							type="text" \
 							class="form-control"\
+							value="' + this.getInputSearchValue() + '"\
 							>\
 					</div>\
 					<div class="combobox-content"></div>\
@@ -593,7 +617,47 @@ class ComboField {
 
 		$('body').append(tpl);
 
+		const eSearchInput = tpl.find('.combobox-search input');
+		eSearchInput.focus();
+		eSearchInput.get(0).selectionStart = eSearchInput.val().length;
+
 		return tpl;
+	}
+
+	/**
+	 * Filter dropdown list with input search value.
+	 *
+	 * @param {string} input - Input search value.
+	 */
+	filterDropdownList(input) {
+		//	Skip if not active
+		if (!this.eActiveDropdownList) {
+			return;
+		}
+
+		this.setInputSearchValue(input);
+		let items = '';
+
+		this.getData().forEach((item) => {
+			//	Find matches
+			if (this.getInputSearchValue().length > 0 && item.name.toLowerCase().indexOf(this.inputSearchValue.toLowerCase()) === -1) {
+				return;
+			}
+
+			items += '\
+				<div class="combobox-item" data-value="' + item.value + '">\
+					<span class="name">\
+						' + item.name + '\
+					</span>\
+				</div>\
+				';
+		});
+
+		this.eActiveDropdownList.find('.combobox-content')
+			.empty()
+			.html(items);
+
+		this.toPosition();
 	}
 
 	/**

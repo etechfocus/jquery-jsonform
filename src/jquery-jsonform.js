@@ -8,8 +8,9 @@ import {TextField} from "./classes/text-field";
 import {CurrencyField} from "./classes/currency-field";
 import {ComboFieldHandler} from "./classes/combo-field";
 import './scss/jquery-jsonform.scss';
+import ModelInfo from "./classes/model-info";
 
-export class FormBuilder {
+export default class FormBuilder {
 
 	constructor(options) {
 
@@ -132,3 +133,7 @@ FormBuilder.TYPE_COMBO = "combo";
 
 FormBuilder.handlers = [];
 FormBuilder.sections = [];
+
+if (typeof window !== 'undefined') {
+	window.FormBuilder = FormBuilder;
+}

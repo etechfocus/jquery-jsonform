@@ -1,6 +1,8 @@
 /**
  * Combo form field handler. Create field instance.
  */
+import ComboMeta from "./combo-meta";
+
 export class ComboFieldHandler {
 
 	/**

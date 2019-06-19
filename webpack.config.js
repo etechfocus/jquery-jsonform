@@ -4,12 +4,14 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
 	entry: './src/jquery-jsonform.js',
 	output: {
+		library: 'JsonForm',
+		libraryTarget: 'var',
 		filename: 'jquery-jsonform.js',
 		path: path.resolve(__dirname, 'dist')
 	},
 	plugins: [
 		new MiniCssExtractPlugin({
-			filename: "query-jsonform.css"
+			filename: "jquery-jsonform.css"
 		})
 	],
 	module: {
@@ -17,12 +19,16 @@ module.exports = {
 			{
 				test: /\.m?js$/,
 				exclude: /(node_modules|bower_components)/,
-				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: ['@babel/preset-env']
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							presets: [
+								'@babel/preset-env'
+							]
+						}
 					}
-				}
+				]
 			},
 			{
 				test: /\.scss$/,

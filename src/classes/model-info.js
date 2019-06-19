@@ -1,3 +1,5 @@
+import AttrInfo from "./attr-info";
+
 class ModelInfo {
 	constructor(props) {
 		this.props = props;

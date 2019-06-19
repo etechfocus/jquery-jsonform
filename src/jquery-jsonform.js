@@ -1,12 +1,13 @@
 /**
  * FormBuilder main class.
  */
-import {HiddenFieldHandler} from "./src/hidden-field-handler";
-import {StringField} from "./src/string-field";
-import {PasswordField} from "./src/password-field";
-import {TextField} from "./src/text-field";
-import {CurrencyField} from "./src/currency-field";
-import {ComboFieldHandler} from "./src/combo-field";
+import {HiddenFieldHandler} from "./classes/hidden-field-handler";
+import {StringField} from "./classes/string-field";
+import {PasswordField} from "./classes/password-field";
+import {TextField} from "./classes/text-field";
+import {CurrencyField} from "./classes/currency-field";
+import {ComboFieldHandler} from "./classes/combo-field";
+import './jquery-jsonform.scss';
 
 export class FormBuilder {
 

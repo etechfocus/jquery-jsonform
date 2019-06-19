@@ -79,20 +79,6 @@ export class ComboField {
 		this.meta = attrInfo.getMeta(ComboMeta);
 
 		/**
-		 * `value` key in input data
-		 *
-		 * @type {string}
-		 */
-		this.valueKey = 'value';
-
-		/**
-		 * `name` key in input data
-		 *
-		 * @type {string}
-		 */
-		this.nameKey = 'name';
-
-		/**
 		 * Current data in select. If in `meta` set `typeaheadUrl` option will be saved last result.
 		 *
 		 * @type {object[]|null}
@@ -119,13 +105,6 @@ export class ComboField {
 		 * @type {object|null}
 		 */
 		this.eField = null;
-
-		/**
-		 * Current active dropdown list.
-		 *
-		 * @type {object|null}
-		 */
-		this.eActiveDropdownList = null;
 
 		this.beforeInit();
 	}
@@ -166,31 +145,31 @@ export class ComboField {
 	}
 
 	/**
-	 * Return input search value
+	 * Return `value` key in input data.
 	 *
 	 * @returns {*}
 	 */
-	getInputSearchValue() {
-		if (typeof this.inputSearchValue === 'string') {
-			return this.inputSearchValue.trim();
+	getValueKey() {
+		//	Return default value
+		if (this.meta.getValueKey() === null) {
+			return 'value';
 		}
 
-		return '';
+		return this.meta.getValueKey();
 	}
 
 	/**
-	 * Set input search value
+	 * Return `name` key in input data.
 	 *
-	 * @param {string} inputSearchValue
+	 * @returns {*}
 	 */
-	setInputSearchValue(inputSearchValue) {
-		if (typeof inputSearchValue === 'string') {
-			this.inputSearchValue = inputSearchValue;
-
-			return;
+	getNameKey() {
+		//	Return default value
+		if (this.meta.getNameKey() === null) {
+			return 'name';
 		}
 
-		this.inputSearchValue = '';
+		return this.meta.getNameKey();
 	}
 
 	/**
@@ -198,22 +177,7 @@ export class ComboField {
 	 */
 	appendField() {
 		//  Set placeholder for default
-		let name = this.meta.getPlaceholder('-- Select value --');
-		//  Select options
-		let options = '';
-
-		this.getData().forEach((item) => {
-			if (item.value.toString() === this.attrInfo.getValue()) {
-				name = item.name;
-			}
-
-			options += '\
-				<option\
-					value="' + item.value + '"\
-				>\
-					' + item.name + '\
-				</option>';
-		});
+		let placeholder = this.meta.getPlaceholder('-- Select value --');
 
 		this.eField = $('\
 			<div \
@@ -222,15 +186,8 @@ export class ComboField {
 			>\
 				<select\
 					id="' + this.attrInfo.getId() + '"\
-					style="display: none;"\
 				>\
-					' + options + '\
 				</select>\
-				<div class="name">\
-					<span>\
-						' + name + '\
-					</span>\
-				</div>\
 			</div>\
       	');
 
@@ -241,265 +198,66 @@ export class ComboField {
 		this.eFieldGroup.append(this.eField);
 		this.boxBody.append(this.eFieldGroup);
 
-		//	Add actions to the field
-		this.addActions();
-	}
+		//	Init Select2
+		const select2Options = {
+			allowClear: true,
+			placeholder: placeholder,
+			width: '100%',
+			containerCssClass: 'jquery-jsonform-combo-container',
+			dropdownCssClass: 'jquery-jsonform-combo-dropdown'
+		};
 
-	/**
-	 * Add actions for the field
-	 */
-	addActions() {
-		const eBody = $('body');
-		let fieldInFocus = false;
+		//	Interactive data
+		if (this.meta.getTypeaheadUrl() !== null) {
+			select2Options.ajax = {
+				url: this.meta.getTypeaheadUrl(),
+				//	Process sending data
+				data: function (params) {
+					//	Wrap data
+					return {
+						search: params.term,
+					};
+				},
+				//	Process request response
+				processResults: (response) => {
+					let data = [];
 
-		this.eField.on('click', () => {
-			fieldInFocus = !fieldInFocus;
+					//	Parse response from server
+					if (Array.isArray(response)) {
+						data = response.map((item) => {
+							return {
+								id: item[this.getValueKey()],
+								text: item[this.getNameKey()]
+							}
+						});
+					}
 
-			if (fieldInFocus) {
-				this.eActiveDropdownList = this.addDropdownList(this.eField, this.getData());
-				this.toPosition();
-				this.toSize(this.eField, this.eActiveDropdownList);
-				//	Filter dropdown list
-				this.filterDropdownList(this.getInputSearchValue());
-			} else {
-				this.removeDropdownList(this.eActiveDropdownList);
+					//	Return filtered data from server
+					return {
+						results: data
+					};
+				}
 			}
-		});
-
-		//	Hide dropdown list if click outside of the field or dropdown list
-		$(document).on('click', (e) => {
-			if (fieldInFocus === null || !this.eActiveDropdownList) {
-				return;
-			}
-
-			const eTarget = $(e.target);
-
-			//	Skip if click on field or dropdown list
-			if (//	Form field match
-				this.eField.is(eTarget) || this.eField.has(eTarget).length !== 0 ||
-				//	Dropdown list
-				this.eActiveDropdownList.is(eTarget) || this.eActiveDropdownList.has(eTarget).length !== 0
-			) {
-				return;
-			}
-
-			//	Remove dropdown list if click outside of field of dropdown list
-			this.removeDropdownList();
-
-			fieldInFocus = false;
-		});
-
-		//	Hide dropdown list select item
-		eBody.on('click', '.combobox-item', (e) => {
-			const eTarget = $(e.target).closest('.combobox-item');
-			const value = eTarget.attr('data-value').toString();
-			let name = '';
-
-			//	Find name for option
-			this.getData().forEach((item) => {
-				if (item.value.toString() === value) {
-					name = item.name;
+		}
+		//	Static data
+		else {
+			//	Data
+			const select2Data = this.getData().map((item) => {
+				return {
+					id: item[this.getValueKey()],
+					text: item[this.getNameKey()]
 				}
 			});
 
-			this.removeDropdownList(this.eActiveDropdownList);
-
-			fieldInFocus = false;
-
-			//	Update form field value
-			this.eField.find('select').val(value);
-			this.eField.find('.name span').text(name);
-		});
-
-		//	Reposition list
-		$(window).on('resize', () => {
-			//	Position only dropdown list that lead to this field
-			if (!fieldInFocus) {
-				return;
-			}
-
-			this.toPosition(this.eActiveDropdownList);
-			this.toSize(this.eActiveDropdownList);
-		});
-
-		//	Dropdown search
-		eBody.on('keyup', '.combobox-search', (e) => {
-			//	Search by typehead URL
-			if (this.meta.getTypeaheadUrl()) {
-				$.ajax({
-					type: 'POST',
-					url: this.meta.getTypeaheadUrl(),
-					data: {
-						inputSearchValue: this.getInputSearchValue()
-					},
-					success: function (response) {
-						//	@todo: Filter data from server and update dropdown list
-					}
-				});
-			}
-			//	Search by static data
-			else {
-				this.filterDropdownList(e.target.value);
-			}
-		});
-	}
-
-	/**
-	 * Add dropdown list to DOM and return link to it node.
-	 */
-	addDropdownList() {
-		const tpl = $('\
-			<div class="combobox">\
-				<div class="combobox-content-wrap">\
-					<div class="combobox-search">\
-						<input \
-							type="text" \
-							class="form-control"\
-							value="' + this.getInputSearchValue() + '"\
-							>\
-					</div>\
-					<div class="combobox-content"></div>\
-				</div>\
-			</div>\
-			');
-
-		this.getData().forEach((item) => {
-			//	Value
-			if (item.value === undefined) {
-				return;
-			}
-
-			const value = item.value;
-
-			//	Name
-			let name = item.name;
-
-			if (name === undefined) {
-				name = '';
-			}
-
-			tpl.find('.combobox-content').append($('\
-				<div class="combobox-item" data-value="' + value + '">\
-					<span class="name">\
-						' + name + '\
-					</span>\
-				</div>\
-				'));
-		});
-
-		$('body').append(tpl);
-
-		const eSearchInput = tpl.find('.combobox-search input');
-		eSearchInput.focus();
-		eSearchInput.get(0).selectionStart = eSearchInput.val().length;
-
-		return tpl;
-	}
-
-	/**
-	 * Filter dropdown list with input search value.
-	 *
-	 * @param {string} input - Input search value.
-	 */
-	filterDropdownList(input) {
-		//	Skip if not active
-		if (!this.eActiveDropdownList) {
-			return;
-		}
-
-		this.setInputSearchValue(input);
-		let items = '';
-
-		this.getData().forEach((item) => {
-			//	Find matches
-			if (this.getInputSearchValue().length > 0 && item.name.toLowerCase().indexOf(this.inputSearchValue.toLowerCase()) === -1) {
-				return;
-			}
-
-			items += '\
-				<div class="combobox-item" data-value="' + item.value + '">\
-					<span class="name">\
-						' + item.name + '\
-					</span>\
-				</div>\
-				';
-		});
-
-		this.eActiveDropdownList.find('.combobox-content')
-			.empty()
-			.html(items);
-
-		this.toPosition();
-	}
-
-	/**
-	 * Remove active combobox
-	 */
-	removeDropdownList() {
-		$(this.eActiveDropdownList).remove();
-	}
-
-	/**
-	 * Move dropdown list to right position near the active field
-	 */
-	toPosition() {
-		const eSearch = this.eActiveDropdownList.find('.combobox-search');
-		const searchHeight = parseFloat(eSearch.outerHeight());
-		const eContent = this.eActiveDropdownList.find('.combobox-content');
-		const dropdownListHeight = parseFloat(this.eActiveDropdownList.outerHeight());
-		const scrollTop = parseFloat($(window).scrollTop());
-		const borderWidth = parseFloat(this.eActiveDropdownList.find('.combobox-content-wrap').css('borderWidth'));
-
-		let top = this.eField.offset().top + this.eField.outerHeight() - borderWidth;
-		let atBottom = true;
-
-		//	Check that dropdown list not out of document height
-		if (top + dropdownListHeight > scrollTop + $(window).height()) {
-			//	Move dropdown list top of the field
-			top = this.eField.offset().top - dropdownListHeight + borderWidth;
-			atBottom = false;
-		}
-
-		this.eActiveDropdownList.css({
-			left: this.eField.offset().left + 'px',
-			top: top + 'px'
-		});
-
-		//	Align search field
-		//	Align search at bottom
-		if (atBottom) {
-			eSearch.css({
-				top: 0,
-				bottom: ''
+			select2Data.unshift({
+				id: '',
+				text: ''
 			});
-			eContent.css({
-				marginTop: eSearch.outerHeight() + 'px',
-				marginBottom: 0
-			});
-		}
-		//	Align search field at top
-		else {
-			eSearch.css({
-				top: '',
-				bottom: 0
-			});
-			eContent.css({
-				marginTop: 0,
-				marginBottom: eSearch.outerHeight() + 'px'
-			});
-		}
-	}
 
-	/**
-	 * Resize dropdown list fit to field
-	 */
-	toSize() {
-		//	Skip if dropdown list now not open
-		if (!this.eActiveDropdownList) {
-			return;
+			select2Options.data = select2Data;
 		}
 
-		this.eActiveDropdownList.width(this.eField.outerWidth() + 'px');
+		this.eFieldGroup.find('select').select2(select2Options);
 	}
 
 }

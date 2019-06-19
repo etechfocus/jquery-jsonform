@@ -17,19 +17,17 @@
         "url": "https://github.com/etechfocus/jquery-jsonform/issues"
     },
     "homepage": "https://github.com/etechfocus/jquery-jsonform#readme",
-    "dependencies": {
+    "dependencies": {},
+    "devDependencies": {
+        "mini-css-extract-plugin": "^0.7.0",
+        "webpack": "^4.34.0",
+        "webpack-cli": "^3.3.4",
         "@babel/core": "^7.4.5",
         "@babel/preset-env": "^7.4.5",
         "babel-loader": "^8.0.6",
         "css-loader": "^3.0.0",
         "node-sass": "^4.12.0",
         "sass-loader": "^7.1.0",
-        "script-loader": "^0.7.2",
         "style-loader": "^0.23.1"
-    },
-    "devDependencies": {
-        "mini-css-extract-plugin": "^0.7.0",
-        "webpack": "^4.34.0",
-        "webpack-cli": "^3.3.4"
     }
 }

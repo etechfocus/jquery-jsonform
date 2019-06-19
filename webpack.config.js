@@ -1,4 +1,5 @@
 const path = require('path');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
 	entry: './src/jquery-jsonform.js',
@@ -6,6 +7,11 @@ module.exports = {
 		filename: 'jquery-jsonform.min.js',
 		path: path.resolve(__dirname, 'dist')
 	},
+	plugins: [
+		new MiniCssExtractPlugin({
+			filename: "query-jsonform.css"
+		})
+	],
 	module: {
 		rules: [
 			{
@@ -21,8 +27,7 @@ module.exports = {
 			{
 				test: /\.scss$/,
 				use: [
-					//	Creates style nodes from JS strings
-					"style-loader",
+					MiniCssExtractPlugin.loader,
 					//	Translates CSS into CommonJS
 					"css-loader",
 					//	Compiles Sass to CSS, using Node Sass by default
@@ -31,6 +36,5 @@ module.exports = {
 			}
 		]
 	},
-	mode: 'development',
-	watch: true
+	mode: 'development'
 };

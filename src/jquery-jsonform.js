@@ -7,7 +7,7 @@ import {PasswordField} from "./classes/password-field";
 import {TextField} from "./classes/text-field";
 import {CurrencyField} from "./classes/currency-field";
 import {ComboFieldHandler} from "./classes/combo-field";
-import './jquery-jsonform.scss';
+import './scss/jquery-jsonform.scss';
 
 export class FormBuilder {
 

@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
 	entry: './src/jquery-jsonform.js',
 	output: {
-		filename: 'jquery-jsonform.min.js',
+		filename: 'jquery-jsonform.js',
 		path: path.resolve(__dirname, 'dist')
 	},
 	plugins: [

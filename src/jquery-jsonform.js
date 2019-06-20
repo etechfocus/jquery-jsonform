@@ -7,8 +7,12 @@ import {PasswordField} from "./classes/password-field";
 import {TextField} from "./classes/text-field";
 import {CurrencyField} from "./classes/currency-field";
 import {ComboFieldHandler} from "./classes/combo-field";
-import './scss/jquery-jsonform.scss';
 import ModelInfo from "./classes/model-info";
+//	Include style
+import './scss/jquery-jsonform.scss';
+//	Import Select2
+import './libs/select2/select2.full';
+import './libs/select2/select2.min.scss';
 
 export default class FormBuilder {
 

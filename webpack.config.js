@@ -1,5 +1,7 @@
 const path = require('path');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserJSPlugin = require('terser-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
 	entry: './src/jquery-jsonform.js',
@@ -9,9 +11,15 @@ module.exports = {
 		filename: 'jquery-jsonform.js',
 		path: path.resolve(__dirname, 'dist')
 	},
+	optimization: {
+		minimizer: [
+			new TerserJSPlugin({}),
+			new OptimizeCSSAssetsPlugin({})
+		],
+	},
 	plugins: [
 		new MiniCssExtractPlugin({
-			filename: "jquery-jsonform.css"
+			filename: 'jquery-jsonform.css',
 		})
 	],
 	module: {
@@ -35,9 +43,16 @@ module.exports = {
 				use: [
 					MiniCssExtractPlugin.loader,
 					//	Translates CSS into CommonJS
-					"css-loader",
+					'css-loader',
 					//	Compiles Sass to CSS, using Node Sass by default
-					"sass-loader"
+					'sass-loader'
+				]
+			},
+			{
+				test: /\.css$/,
+				use: [
+					MiniCssExtractPlugin.loader,
+					'css-loader'
 				]
 			}
 		]

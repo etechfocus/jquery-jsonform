@@ -86,13 +86,6 @@ export class ComboField {
 		this.data = null;
 
 		/**
-		 * Input search value in search field in dropdown list.
-		 *
-		 * @param {string|null}
-		 */
-		this.inputSearchValue = null;
-
-		/**
 		 * Field group/wrap where place field with field.
 		 *
 		 * @type {object|null}
@@ -215,16 +208,22 @@ export class ComboField {
 				data: function (params) {
 					//	Wrap data
 					return {
-						search: params.term,
+						term: params.term,
 					};
 				},
 				//	Process request response
 				processResults: (response) => {
+					if (response.code !== 200) {
+						console.error(response.message);
+
+						return [];
+					}
+
 					let data = [];
 
 					//	Parse response from server
-					if (Array.isArray(response)) {
-						data = response.map((item) => {
+					if (Array.isArray(response.data)) {
+						data = response.data.map((item) => {
 							return {
 								id: item[this.getValueKey()],
 								text: item[this.getNameKey()]

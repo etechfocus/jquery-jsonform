@@ -172,21 +172,21 @@ export class ComboField {
 		//  Set placeholder for default
 		let placeholder = this.meta.getPlaceholder('-- Select value --');
 
-		this.eField = $('\
-			<div \
-				class="form-control form-control-combo" \
-				id="' + this.attrInfo.getId() + '"\
-			>\
-				<select\
-					id="' + this.attrInfo.getId() + '"\
-				>\
-				</select>\
-			</div>\
-      	');
+		this.eField = $(`
+			<div
+				class="form-control form-control-combo" 
+			>
+				<select
+					name="${this.attrInfo.getId()}"
+					id="${this.attrInfo.getId()}"
+				>
+				</select>
+			</div>
+      	`);
 
 		//	Put field in wrap
 		this.eFieldGroup = $('<div class="form-group"></div>');
-		const fieldLabel = $('<label for="' + this.attrInfo.getId() + '">' + this.attrInfo.getName() + '</label>');
+		const fieldLabel = $(`<label for="' + this.attrInfo.getId() + '">${this.attrInfo.getName()}</label>`);
 		this.eFieldGroup.append(fieldLabel);
 		this.eFieldGroup.append(this.eField);
 		this.boxBody.append(this.eFieldGroup);

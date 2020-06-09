@@ -1,0 +1,35 @@
+html {
+    body {
+        //height: auto;
+
+        //  Combo field
+        .form-control-combo {
+            padding: 0;
+            border: none;
+
+            //  Select2 container
+            > .select2 {
+                height: 100%;
+                padding: 0;
+
+                > .selection {
+                    display: block;
+                    height: 100%;
+
+                    > .select2-selection {
+                        height: 100%;
+                        border-radius: 0;
+                        border-color: #d2d6de;
+                    }
+                }
+            }
+        }
+
+        //  Select2 dropdown
+        .jquery-jsonform-combo-dropdown {
+            border-radius: 0;
+            border-color: #d2d6de;
+        }
+    }
+
+}
